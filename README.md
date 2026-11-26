@@ -9,7 +9,8 @@ the assignment report, and the generated graphs for CS241 Assignment 2.
 OS-Assignment2/
 ├── *.java                         # console simulator and workloads
 ├── src/main/java/com/cpu/scheduler/
-│   └── *.java                     # JavaFX GUI and GUI scheduler classes
+│   ├── Main.java                  # compact GUI (all GUI screens and handlers)
+│   └── *.java                     # scheduler classes used by the GUI
 ├── pom.xml                        # JavaFX/Maven build
 ├── mvnw.cmd                       # Windows Maven launcher
 ├── .vscode/                       # VS Code tasks and launch configurations
@@ -63,9 +64,10 @@ parent path automatically. In VS Code, open the repository root and run:
 
 The debug configuration is `Debug CPU Scheduler GUI`.
 
-GUI workflow: add processes in **Process Management**, run **Preemptive SJF**
-and/or **ACS Monitor**, then inspect the logs, results, ACS monitor, Gantt chart,
-and **Performance** comparison.
+The GUI is intentionally kept in one clear Main.java file. It provides
+process input, SJF/ACS controls, validation, execution logs, result metrics,
+and a compact Gantt chart. The scheduler classes remain separate so the
+algorithm implementation is easy to discuss and test.
 
 ## Test workloads
 
