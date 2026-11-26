@@ -26,6 +26,7 @@ public class SJFScheduler {
 
             if (shortest == null) {
                 executionLog.add("Time " + currentTime + ": CPU Idle");
+                lastExecutedProcess = null; //change
                 currentTime++;
                 continue;
             }

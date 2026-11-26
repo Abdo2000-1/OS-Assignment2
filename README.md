@@ -1,79 +1,98 @@
-# CS241 Assignment 2 - Cloud-Cluster CPU Scheduling
+# CS241 Assignment 2 — CPU Scheduling
 
-This repository contains a Java simulation for CPU scheduling in a node running mixed containerized workloads.
+This repository contains the console simulator, the integrated JavaFX GUI,
+the assignment report, and the generated graphs for CS241 Assignment 2.
+
+## Project layout
+
+```text
+OS-Assignment2/
+├── *.java                         # console simulator and workloads
+├── src/main/java/com/cpu/scheduler/
+│   └── *.java                     # JavaFX GUI and GUI scheduler classes
+├── pom.xml                        # JavaFX/Maven build
+├── mvnw.cmd                       # Windows Maven launcher
+├── .vscode/                       # VS Code tasks and launch configurations
+├── CS241_Assignment2_Report.pdf   # assignment report
+└── graphs/                        # report graphs
+```
+
+Generated files (`target/`, `out/`, `.tools/`, and `*.class`) are ignored and
+should not be committed.
 
 ## Implemented schedulers
 
-- **Preemptive Shortest-Job First (SJF/SRTF):** runs the ready process with the shortest remaining time.
-- **Adaptive Container Scheduler (ACS):**
-  - **Tier 1:** Round Robin with a fixed quantum.
-  - **Tier 2:** Non-preemptive priority scheduling for processes that consume their full quantum.
-  - **Tier 3:** Aging for processes waiting in Tier 2 to reduce starvation.
+- **Preemptive Shortest-Job First (SJF/SRTF):** runs the ready process with the
+  shortest remaining time.
+- **Adaptive Container Scheduler (ACS):** Tier 1 round robin, Tier 2
+  non-preemptive priority scheduling, and aging to reduce starvation.
 
-## Files
+## Requirements
 
-| File | Description |
-| --- | --- |
-| `Process.java` | Process data model. |
-| `SJFScheduler.java` | Preemptive SJF implementation. |
-| `ACSScheduler.java` | ACS implementation with Tier 1 and Tier 2 queues. |
-| `AgingManager.java` | Aging and effective-priority logic. |
-| `AgingDemo.java` | Small standalone aging demonstration. |
-| `Main.java` | Runs the original assignment test cases and prints the schedules and metrics. |
-| `TestCases.java` | Standalone definitions for the official and generated workloads. |
-| `report/CS241_Assignment2_Report.pdf` | Assignment report. |
-| `report/graphs/` | Generated waiting-time, turnaround-time, CPU-utilization, comparison, and heatmap graphs. |
+- JDK 27 (the Maven build uses Java release 27)
+- Windows for `mvnw.cmd`
+- VS Code Java Extension Pack is recommended for debugging
 
-## Test cases
+## Run the console simulator
 
-The standalone `TestCases.java` file defines these workloads:
+From the repository root:
 
-| Test case | Processes `(arrival, burst, priority)` | Default Q | Default CS |
+```powershell
+javac -d out Process.java AgingManager.java SJFScheduler.java ACSScheduler.java Main.java AgingDemo.java TestCases.java
+java -cp out Main
+```
+
+`Main` runs four workloads and prints each SJF/ACS execution timeline and the
+waiting, turnaround, and response-time metrics. Run the aging demonstration with:
+
+```powershell
+java -cp out AgingDemo
+```
+
+## Run the JavaFX GUI
+
+```powershell
+.\mvnw.cmd javafx:run
+```
+
+The wrapper downloads Maven into `.tools/` when needed and handles the Arabic
+parent path automatically. In VS Code, open the repository root and run:
+
+- `Run CPU Scheduler GUI`, or
+- `Run console simulator`.
+
+The debug configuration is `Debug CPU Scheduler GUI`.
+
+GUI workflow: add processes in **Process Management**, run **Preemptive SJF**
+and/or **ACS Monitor**, then inspect the logs, results, ACS monitor, Gantt chart,
+and **Performance** comparison.
+
+## Test workloads
+
+| Test case | Processes `(arrival, burst, priority)` | Quantum | Context switch |
 | --- | --- | ---: | ---: |
-| Test Case 1 - Official | P1 `(0,4,2)`, P2 `(1,7,3)`, P3 `(3,2,1)` | 3 | 0 |
-| Test Case 2 - Official | P1 `(0,5,4)`, P2 `(1,6,2)`, P3 `(4,4,3)` | 3 | 1 |
-| Test Case 3 - Mixed Workload | P1 `(0,10,3)`, P2 `(1,2,1)`, P3 `(2,8,2)`, P4 `(3,3,4)`, P5 `(6,5,2)` | 2 | 1 |
-| Test Case 4 - Idle and Preemption | P1 `(0,1,3)`, P2 `(5,8,3)`, P3 `(6,2,1)`, P4 `(8,1,2)` | 2 | 1 |
-
-## Build and run
-
-From the repository directory:
-
-```text
-javac *.java
-java Main
-```
-
-The program prints the execution timeline and the following metrics for each process:
-
-- Waiting time
-- Turnaround time
-- Response time
-- Average waiting, turnaround, and response time
-
-To run the aging demonstration:
-
-```text
-java AgingDemo
-```
+| Test Case 1 — Official | P1 `(0,4,2)`, P2 `(1,7,3)`, P3 `(3,2,1)` | 3 | 0 |
+| Test Case 2 — Official | P1 `(0,5,4)`, P2 `(1,6,2)`, P3 `(4,4,3)` | 3 | 1 |
+| Test Case 3 — Mixed workload | P1 `(0,10,3)`, P2 `(1,2,1)`, P3 `(2,8,2)`, P4 `(3,3,4)`, P5 `(6,5,2)` | 2 | 1 |
+| Test Case 4 — Idle and preemption | P1 `(0,1,3)`, P2 `(5,8,3)`, P3 `(6,2,1)`, P4 `(8,1,2)` | 2 | 1 |
 
 ## Metric definitions
 
-- **Turnaround time** = finish time - arrival time
-- **Waiting time** = turnaround time - burst time
-- **Response time** = first CPU start time - arrival time
+- Turnaround time = finish time − arrival time
+- Waiting time = turnaround time − burst time
+- Response time = first CPU start time − arrival time
 
-For ACS aging, lower numerical priority means higher priority. The effective priority is calculated using the waiting time and the aging interval described in the assignment.
+For ACS, lower numerical priority means higher priority. The effective
+priority is reduced according to the aging interval implemented by
+`AgingManager`.
 
 ## Report and graphs
 
-The PDF report contains:
+The report contains scheduler descriptions, test-case definitions, per-process
+and average metrics, context-switch/quantum analysis, ACS aging and demotion
+discussion, and the following graphs:
 
-- Scheduler descriptions and implementation assumptions
-- All test-case definitions
-- Per-process and average scheduling metrics
-- Context-switch and quantum analysis
-- Graphs showing waiting time, turnaround time, CPU utilization, and Q/CS heatmaps
-- ACS Tier 2 demotion trade-off discussion
-- A sample per-time-step ACS demotion matrix
-
+- scheduler baseline comparison
+- waiting/turnaround and CPU-utilization plots
+- Q/CS heatmaps
+- ACS turnaround and waiting heatmaps

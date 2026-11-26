@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run CPU Scheduler GUI",
+            "type": "shell",
+            "command": ".\\mvnw.cmd",
+            "args": ["javafx:run"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile console simulator",
+            "type": "shell",
+            "command": "javac",
+            "args": [
+                "-d",
+                "${workspaceFolder}\\out",
+                "${workspaceFolder}\\Process.java",
+                "${workspaceFolder}\\AgingManager.java",
+                "${workspaceFolder}\\SJFScheduler.java",
+                "${workspaceFolder}\\ACSScheduler.java",
+                "${workspaceFolder}\\Main.java",
+                "${workspaceFolder}\\AgingDemo.java",
+                "${workspaceFolder}\\TestCases.java"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$javac"]
+        },
+        {
+            "label": "Run console simulator",
+            "type": "shell",
+            "command": "java",
+            "args": ["-cp", "${workspaceFolder}\\out", "Main"],
+            "dependsOn": "Compile console simulator",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
