@@ -35,8 +35,8 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <!-- //change: use the unchanged GUI copied from Ass2_Final. -->
-                    <mainClass>com.cpu.scheduler.Main</mainClass>
+                    <!-- //change: use the single minimal GUI in the project root. -->
+                    <mainClass>MainGUI</mainClass>
                 </configuration>
             </plugin>
         </plugins>

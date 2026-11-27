@@ -16,11 +16,16 @@ if not exist "%MAVEN_HOME%\bin\mvn.cmd" (
 )
 
 rem Java/Maven can fail when the project path contains Arabic characters.
-rem Use a temporary ASCII drive letter while Maven is running.
-set "MAVEN_DRIVE=Z:"
-subst %MAVEN_DRIVE% "%~dp0" >nul
-if errorlevel 1 (
-    echo Could not create a temporary drive for Maven.
+rem Use the first available temporary ASCII drive letter while Maven runs.
+set "MAVEN_DRIVE="
+for %%D in (Z Y X W V U T S R Q P O N M L K J I H G F E D C B A) do (
+    if not defined MAVEN_DRIVE (
+        subst %%D: "%~dp0" >nul 2>&1
+        if not errorlevel 1 set "MAVEN_DRIVE=%%D:"
+    )
+)
+if not defined MAVEN_DRIVE (
+    echo Could not create a temporary drive for Maven. All drive letters are busy.
     exit /b 1
 )
 
