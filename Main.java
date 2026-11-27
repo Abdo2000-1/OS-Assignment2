@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    static final String[] NAMES = {"Test Case 1", "Test Case 2", "Test Case 3"};
-    static final int[] QUANTA = {3, 3, 2};
-    static final int[] CS_TIMES = {0, 1, 1};
+    static final String[] NAMES = {"Test Case 1", "Test Case 2", "Test Case 3", "Test Case 4"}; //change
+    static final int[] QUANTA = {3, 3, 2, 2}; //change
+    static final int[] CS_TIMES = {0, 1, 1, 1}; //change
 
     public static List<List<Process>> buildTestCases() {
         List<List<Process>> cases = new ArrayList<>();
@@ -31,6 +31,14 @@ public class Main {
         tc3.add(new Process("P4", 3, 3, 4));
         tc3.add(new Process("P5", 6, 5, 2));
         cases.add(tc3);
+
+        // Test Case 4 (idle CPU and preemption) //change
+        List<Process> tc4 = new ArrayList<>(); //change
+        tc4.add(new Process("P1", 0, 1, 3)); //change
+        tc4.add(new Process("P2", 5, 8, 3)); //change
+        tc4.add(new Process("P3", 6, 2, 1)); //change
+        tc4.add(new Process("P4", 8, 1, 2)); //change
+        cases.add(tc4); //change
 
         return cases;
     }

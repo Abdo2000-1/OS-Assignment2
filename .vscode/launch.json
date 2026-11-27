@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug CPU Scheduler GUI",
+            "request": "launch",
+            "mainClass": "com.cpu.scheduler.Main",
+            "projectName": "cpu-scheduler-integrated",
+            "console": "integratedTerminal",
+            "vmArgs": "--enable-native-access=javafx.graphics"
+        },
+        {
+            "type": "java",
+            "name": "Run console Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "cpu-scheduler-integrated",
+            "console": "integratedTerminal"
+        }
+    ]
+}

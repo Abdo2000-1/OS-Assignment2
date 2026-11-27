@@ -1,0 +1,7 @@
+target/
+out/
+.tools/
+*.class
+.classpath
+.project
+.settings/
